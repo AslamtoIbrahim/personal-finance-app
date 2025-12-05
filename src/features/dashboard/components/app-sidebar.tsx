@@ -1,0 +1,185 @@
+"use client"
+
+import {
+  ArrowUpDown,
+  AudioWaveform,
+  BookOpen,
+  Bot,
+  Command,
+  GalleryVerticalEnd,
+  Home,
+  PieChart,
+  Receipt,
+  ReceiptText,
+  Settings2,
+  SquareTerminal
+} from "lucide-react"
+import * as React from "react"
+
+import { NavItems } from "@/features/dashboard/components/nav-items"
+import { NavUser } from "@/features/dashboard/components/nav-user"
+import { TeamSwitcher } from "@/features/dashboard/components/team-switcher"
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarRail,
+} from "@/features/dashboard/components/ui/sidebar"
+
+// This is sample data.
+export const data = {
+  user: {
+    name: "aslama",
+    email: "m@example.com",
+    avatar: "https://ui-private.shadcn.com/avatars/02.png",
+  },
+  teams: [
+    {
+      name: "Acme Inc",
+      logo: GalleryVerticalEnd,
+      plan: "Enterprise",
+    },
+    {
+      name: "Acme Corp.",
+      logo: AudioWaveform,
+      plan: "Startup",
+    },
+    {
+      name: "Evil Corp.",
+      logo: Command,
+      plan: "Free",
+    },
+  ],
+  navMain: [
+    {
+      title: "Playground",
+      url: "#",
+      icon: SquareTerminal,
+      isActive: true,
+      items: [
+        {
+          title: "History",
+          url: "#",
+        },
+        {
+          title: "Starred",
+          url: "#",
+        },
+        {
+          title: "Settings",
+          url: "#",
+        },
+      ],
+    },
+    {
+      title: "Models",
+      url: "#",
+      icon: Bot,
+      items: [
+        {
+          title: "Genesis",
+          url: "#",
+        },
+        {
+          title: "Explorer",
+          url: "#",
+        },
+        {
+          title: "Quantum",
+          url: "#",
+        },
+      ],
+    },
+    {
+      title: "Documentation",
+      url: "#",
+      icon: BookOpen,
+      items: [
+        {
+          title: "Introduction",
+          url: "#",
+        },
+        {
+          title: "Get Started",
+          url: "#",
+        },
+        {
+          title: "Tutorials",
+          url: "#",
+        },
+        {
+          title: "Changelog",
+          url: "#",
+        },
+      ],
+    },
+    {
+      title: "Settings",
+      url: "#",
+      icon: Settings2,
+      items: [
+        {
+          title: "General",
+          url: "#",
+        },
+        {
+          title: "Team",
+          url: "#",
+        },
+        {
+          title: "Billing",
+          url: "#",
+        },
+        {
+          title: "Limits",
+          url: "#",
+        },
+      ],
+    },
+  ],
+  items: [
+    {
+      name: "Overview",
+      url: "overview",
+      icon: Home,
+    },
+    {
+      name: "Transactions",
+      url: "transations",
+      icon: ArrowUpDown,
+    },
+    {
+      name: "Budgets",
+      url: "budgets",
+      icon: PieChart,
+    },
+    {
+      name: "Pots",
+      url: "pots",
+      icon: Receipt,
+    },
+    {
+      name: "Recurring Bills",
+      url: "recurring",
+      icon: ReceiptText,
+    },
+  ],
+}
+
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  return (
+    <Sidebar collapsible="icon" {...props}>
+      <SidebarHeader>
+        <TeamSwitcher />
+      </SidebarHeader>
+      <SidebarContent>
+        <NavItems navItems={data.items} />
+      </SidebarContent>
+      <SidebarFooter>
+        <NavUser user={data.user} />
+      </SidebarFooter>
+      <SidebarRail />
+    </Sidebar>
+  )
+}

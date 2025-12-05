@@ -22,7 +22,21 @@
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+
+    // "baseUrl": ".",
+    // "paths": {
+    //   // "@/*": ["src/*"],
+    //   // "components/*": ["src/features/dashboard/components/*"],
+    //   // "utils": ["src/features/dashboard/lib/utils"],
+    //   // "ui/*": ["src/features/dashboard/components/ui/*"],
+    //   // "lib/*": ["src/features/dashboard/lib/*"],
+    //   // "hooks/*": ["src/features/dashboard/hooks/*"]
+    // }
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["src"]
 }

@@ -1,0 +1,55 @@
+import { cn } from "@/shared/lib/utils";
+import { Moon, Sun } from "lucide-react";
+import { useState } from "react";
+
+type ButtonThemeProps = React.ComponentProps<'div'> & { className?: string; }
+
+
+function ButtonTheme({ className, ...props }: ButtonThemeProps) {
+    const [isDark, setIsDark] = useState(() => {
+        return (
+            localStorage.theme === 'dark' ||
+            (!('theme' in localStorage) &&
+                window.matchMedia('(prefers-color-scheme: dark)').matches)
+        )
+    })
+
+    const onDarkModeClick = () => {
+        const mode = !isDark
+        document.documentElement.classList.toggle('dark', mode)
+        localStorage.theme = mode ? 'dark' : 'light'
+        setIsDark(mode)
+    }
+    return (
+        <div
+            className={cn(
+                'm-1 flex w-[calc(100%-1rem)] items-center justify-between p-1',
+                className
+            )}
+            {...props}
+        >
+            <div className="flex items-center gap-2">
+                <section>
+                    <Sun
+                        className={`text-foreground/50 absolute size-4 transition-all duration-200 ease-in-out ${!isDark ? 'visible opacity-100' : 'invisible opacity-0'}`}
+                    />
+                    <Moon
+                        className={`text-foreground size-4 transition-all duration-200 ease-in-out ${isDark ? 'visible opacity-100' : 'invisible opacity-0'}`}
+                    />
+                </section>
+                <p className="text-sm capitalize">dark mode</p>
+            </div>
+            <section
+                onClick={onDarkModeClick}
+                className="bg-foreground/50 w-10 rounded p-1"
+            >
+                <div
+                    className={`bg-popover size-3 rounded-2xl transition-all duration-300 ease-in-out ${isDark ? 'translate-x-0' : 'translate-x-5'}`}
+                />
+            </section>
+        </div>
+    )
+}
+
+
+export default ButtonTheme;
