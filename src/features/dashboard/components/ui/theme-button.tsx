@@ -5,7 +5,7 @@ import { useState } from "react";
 type ButtonThemeProps = React.ComponentProps<'div'> & { className?: string; }
 
 
-function ButtonTheme({ className, ...props }: ButtonThemeProps) {
+function ThemeButton({ className, ...props }: ButtonThemeProps) {
     const [isDark, setIsDark] = useState(() => {
         return (
             localStorage.theme === 'dark' ||
@@ -52,4 +52,4 @@ function ButtonTheme({ className, ...props }: ButtonThemeProps) {
 }
 
 
-export default ButtonTheme;
+export default ThemeButton;

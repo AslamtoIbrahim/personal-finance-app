@@ -8,7 +8,7 @@ type ItemPotsProps = React.ComponentProps<'div'> & {
 }
 
 
-function ItemTitlePrice({ className, title, price, ...props }: ItemPotsProps) {
+function PriceTitleItem({ className, title, price, ...props }: ItemPotsProps) {
     return <div className={cn('w-20 h-fit flex gap-3', className)} {...props}>
         <div className="rounded w-1 shrink-0" style={{ background: uniqolor(title).color }} />
         <div className="text-start space-y-1">
@@ -19,4 +19,4 @@ function ItemTitlePrice({ className, title, price, ...props }: ItemPotsProps) {
 }
 
 
-export default ItemTitlePrice;
+export default PriceTitleItem;

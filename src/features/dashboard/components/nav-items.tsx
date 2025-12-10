@@ -29,24 +29,25 @@ export function NavItems({
     icon: LucideIcon
   }[]
 }) {
-  const { pathname } = useLocation();
+  const  pathname  = decodeURIComponent(useLocation().pathname)
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:">
       <SidebarMenu>
         {navItems.map((item) => (
+         
           <SidebarMenuItem key={item.name}>
             <SidebarMenuButton asChild className={`${pathname.includes(item.url) ? 'bg-foreground/10' : ''}`}>
               <Link to={item.url}>
-                <item.icon />
-                <span>{item.name}</span>
+                <item.icon className={`${pathname.includes(item.url) ? 'text-primary' : ''}`}/>
+                <span className={`${pathname.includes(item.url) ? 'text-primary' : ''}`}>{item.name}</span>
               </Link>
             </SidebarMenuButton>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuAction showOnHover={!pathname.includes(item.url)}>
                   <Activity mode={pathname.includes(item.url) ? "visible" : "hidden"}>
-                    <ChevronRightIcon />
+                    <ChevronRightIcon className="text-primary" />
                   </Activity>
                   <span className="sr-only">More</span>
                 </SidebarMenuAction>

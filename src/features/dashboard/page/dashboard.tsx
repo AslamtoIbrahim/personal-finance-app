@@ -30,7 +30,7 @@ export default function Dashboard() {
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
                   <BreadcrumbLink className='capitalize'>
-                    {pathname.slice(1)}
+                    {decodeURIComponent(pathname.slice(1))}
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 {/* <BreadcrumbSeparator className="hidden md:block" />

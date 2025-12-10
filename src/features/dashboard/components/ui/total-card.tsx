@@ -8,7 +8,7 @@ type CardViewProps = React.ComponentProps<'div'> & {
 }
 
 
-function CardView({ className, title, price, ...props }: CardViewProps) {
+function TotalCard({ className, title, price, ...props }: CardViewProps) {
     return (<Card className={cn('w-full flex-1 gap-y-2 pe-2 text-start', className)} {...props}>
         <CardHeader>
             <CardTitle className="font-light text-lg text-nowrap capitalize">{title}</CardTitle>
@@ -20,4 +20,4 @@ function CardView({ className, title, price, ...props }: CardViewProps) {
 }
 
 
-export default CardView;
+export default TotalCard;

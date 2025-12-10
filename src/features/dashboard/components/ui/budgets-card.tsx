@@ -4,20 +4,20 @@ import { cn } from "../../lib/utils";
 import { data } from "../app-sidebar";
 import { Button } from "./button";
 import { Card, CardContent, CardHeader, CardTitle } from "./card";
-import ItemTitlePrice from "./item-title-price";
+import PriceTitleItem from "./price-title-item";
 import { ChartPieDonutText } from "../charts/chart-pie-donut-text";
 
 type CardBudgetsProps = React.ComponentProps<'div'> & { className?: string; }
 
 
-function CardBudgets({ className, ...props }: CardBudgetsProps) {
+function BudgetsCard({ className, ...props }: CardBudgetsProps) {
     return <Card className={cn('', className)} {...props}>
 
         <CardHeader>
             <div className="flex items-center w-full justify-between">
                 <CardTitle>Budgets</CardTitle>
                 <Button variant={'link'}>
-                    <Link to={`/${data.items[2].url}`} className="capitalize">see details</Link>
+                    <Link to={`/${data.items[2].url}`} className="capitalize text-xs md:text-base">see details</Link>
                     <ChevronRightIcon />
                 </Button>
             </div>
@@ -26,7 +26,7 @@ function CardBudgets({ className, ...props }: CardBudgetsProps) {
             <ChartPieDonutText />
             <section className="flex gap-4 md:gap-x-8 flex-wrap  ">
                 {
-                    [...Array(4)].map((_, i) => <ItemTitlePrice className=" " key={i} title={`title ${i * 544}`} price={110} />)
+                    [...Array(4)].map((_, i) => <PriceTitleItem className=" " key={i} title={`title ${i * 544}`} price={110} />)
                 }
             </section>
         </CardContent>
@@ -36,4 +36,4 @@ function CardBudgets({ className, ...props }: CardBudgetsProps) {
 }
 
 
-export default CardBudgets;
+export default BudgetsCard;

@@ -161,7 +161,7 @@ export const data = {
     },
     {
       name: "Recurring Bills",
-      url: "recurring",
+      url: "recurring bills",
       icon: ReceiptText,
     },
   ],

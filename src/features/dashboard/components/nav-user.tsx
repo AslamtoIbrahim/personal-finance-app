@@ -27,7 +27,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/features/dashboard/components/ui/sidebar"
-import ButtonTheme from "./ui/button-theme"
+import ThemeButton from "./ui/theme-button"
 
 export function NavUser({
   user,
@@ -80,7 +80,7 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-               <ButtonTheme />
+              <ThemeButton />
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>

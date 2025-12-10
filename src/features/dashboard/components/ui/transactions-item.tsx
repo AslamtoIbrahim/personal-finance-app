@@ -8,7 +8,7 @@ type ItemTransactionsProps = React.ComponentProps<'div'> & {
 }
 
 
-function ItemTransactions({ className, name, price, date, ...props }: ItemTransactionsProps) {
+function TransactionsItem({ className, name, price, date, ...props }: ItemTransactionsProps) {
     return <div className={cn('flex gap-y-2 md:items-center flex-col md:flex-row justify-between p-2', className)} {...props}>
         <section className="flex items-center gap-x-2 md:gap-x-4">
             <Avatar>
@@ -25,4 +25,4 @@ function ItemTransactions({ className, name, price, date, ...props }: ItemTransa
 }
 
 
-export default ItemTransactions;
+export default TransactionsItem;
