@@ -1,21 +1,27 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { potSchema } from "../../lib/schemas/pot.schema";
-import type { CreatePot } from "../../lib/types/pot";
+import type { CreatePotType, Pot } from "../../lib/types/pot";
 import { cn } from "../../lib/utils";
 import { Button } from "./button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./card";
 import { Field, FieldError, FieldGroup, FieldLabel } from "./field";
 import { Input } from "./input";
+import { useDispatch } from "react-redux";
+import { addNewPot, updatePot } from "../../lib/financer/financeSlicer";
+import uniqolor from "uniqolor";
+import { useEffect } from "react";
 
 type PotAddDialogProps = React.ComponentProps<'div'> & {
   className?: string;
   closeDialog: () => void
+  pot?: Pot
 }
 
 
-function PotAddDialog({ className, closeDialog, ...props }: PotAddDialogProps) {
-  const form = useForm<CreatePot>({
+function PotAddDialog({ className, closeDialog, pot, ...props }: PotAddDialogProps) {
+  const dispatch = useDispatch()
+  const form = useForm<CreatePotType>({
     resolver: zodResolver(potSchema),
     defaultValues: {
       name: '',
@@ -23,9 +29,47 @@ function PotAddDialog({ className, closeDialog, ...props }: PotAddDialogProps) {
     }
   })
 
-  function onSubmit(data: CreatePot) {
+  useEffect(() => {
+    if (pot) {
+      form.reset({
+        name: pot.name,
+        target: pot.target.toString(),
+      })
+    }
+
+    return () => resetPotsValues()
+
+  }, [pot, form]);
+
+  const resetPotsValues = () => {
+    form.reset({
+      name: '',
+      target: '',
+    })
+  };
+
+  function onSubmit(data: CreatePotType) {
     console.log('data: ', data);
+    const color = uniqolor(`${new Date() + data.name + data.target + new Date()}`).color
+    if (pot) {
+      dispatch(updatePot({
+        lastTheme: pot.theme,
+        name: data.name,
+        target: Number(data.target),
+        theme: pot.name !== data.name ? color : pot.theme,
+      }))
+      resetPotsValues()
+    } else {
+      dispatch(addNewPot({
+        name: data.name,
+        target: Number(data.target),
+        theme: color,
+        total: 0
+      }))
+      resetPotsValues()
+    }
     closeDialog()
+
   }
 
   return (
@@ -34,9 +78,13 @@ function PotAddDialog({ className, closeDialog, ...props }: PotAddDialogProps) {
       className
     )} {...props}>
       <CardHeader>
-        <CardTitle>Add Pot</CardTitle>
-        <CardDescription>
-          Create a pot to set savings targets. These can help keep you on track as you save for special purchases.        </CardDescription>
+        <CardTitle>{pot ? 'Edit' : 'Add'} Pot</CardTitle>
+        {pot ? <CardDescription>
+          If your savings target change, feel free to edit your pots.
+        </CardDescription> :
+          <CardDescription>
+            Create a pot to set savings targets. These can help keep you on track as you save for special purchases.
+          </CardDescription>}
       </CardHeader>
       <CardContent>
         <form id="form-rhf-pot" onSubmit={form.handleSubmit(onSubmit)}>
@@ -89,11 +137,11 @@ function PotAddDialog({ className, closeDialog, ...props }: PotAddDialogProps) {
       </CardContent>
       <CardFooter>
         <Field orientation="horizontal">
-          <Button type="button" variant="outline" onClick={() => form.reset()}>
+          <Button type="button" variant="outline" onClick={resetPotsValues}>
             Reset
           </Button>
           <Button type="submit" form="form-rhf-pot">
-            Add pot
+            {pot ? 'Edit' : 'Add'} pot
           </Button>
         </Field>
       </CardFooter>

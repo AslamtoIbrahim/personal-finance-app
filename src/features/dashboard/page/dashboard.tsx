@@ -11,10 +11,18 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '@/features/dashboard/components/ui/sidebar'
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import { Outlet, useLocation } from 'react-router-dom'
+import { fetchData } from '../lib/financer/financeSlicer'
+import type { AppDispatch } from '@/store/store'
 
 export default function Dashboard() {
   const { pathname } = useLocation();
+  const dispatch = useDispatch<AppDispatch>()
+  useEffect(() => {
+    dispatch(fetchData())
+  }, [dispatch]);
   return (
     <SidebarProvider>
       <AppSidebar />

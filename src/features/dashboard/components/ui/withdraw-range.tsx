@@ -8,9 +8,10 @@ type WithdrawRangProps = React.ComponentProps<'div'> & {
 }
 
 
-function WithdrawRang({ className, pot,withdrawValue, ...props }: WithdrawRangProps) {
-    const addition = pot.target > ((pot.total * 100) / pot.target) ? (pot.total * 100) / pot.target + withdrawValue : 100
-    const substraction = 100 - addition + withdrawValue
+function WithdrawRang({ className, pot, withdrawValue, ...props }: WithdrawRangProps) {
+    const addition = pot.target > ((pot.total * 100) / pot.target) ? (pot.total * 100) / pot.target : 100
+    const moneyPercent = pot.target > ((withdrawValue * 100) / pot.target) ? (withdrawValue * 100) / pot.target : 100
+    const withdrawPercent = addition - moneyPercent
     return <div>
         <section className={cn('w-full bg-background rounded', className)} {...props}>
             <div className="flex">
@@ -19,12 +20,12 @@ function WithdrawRang({ className, pot,withdrawValue, ...props }: WithdrawRangPr
                     width: `${addition}%`
                 }} />
                 <div className={`h-2 rounded-2xl bg-red-500`} style={{
-                    width: `${substraction}%`
+                    width: `${withdrawPercent}%`
                 }} />
             </div>
         </section>
         <section className="flex items-center justify-between text-xs py-2">
-            <p className="font-semibold">{(pot.total * 100) / pot.target}%</p>
+            <p className="font-semibold text-red-500">{(withdrawPercent).toFixed(2)}%</p>
             <p className="text-foreground/75">Target of {formatPrice(pot.target)}</p>
         </section>
     </div>

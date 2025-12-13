@@ -11,6 +11,9 @@ import Overview from "./features/dashboard/page/overview";
 import Transactions from "./features/dashboard/page/transactions";
 import Pots from "./features/dashboard/page/pots";
 import Recurring from "./features/dashboard/page/recurring";
+import { Provider } from 'react-redux'
+import { store } from "./store/store";
+import { Toaster } from "sonner";
 
 const router = createBrowserRouter([
   {
@@ -22,7 +25,7 @@ const router = createBrowserRouter([
         element: <Navigate to={data.items[0].url} />
       },
       {
-        
+
         path: data.items[0].url,
         element: <Overview />
       },
@@ -48,7 +51,10 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <Toaster />
+      <RouterProvider router={router} />
+    </Provider>
   )
 }
 

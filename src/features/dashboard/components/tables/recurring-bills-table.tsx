@@ -1,6 +1,6 @@
 'use client'
 
-import { useId, useState } from 'react'
+import { useId, useMemo, useState } from 'react'
 
 import { AlertCircle, CheckCircle2, ChevronLeftIcon, ChevronRightIcon, SearchIcon } from 'lucide-react'
 
@@ -23,7 +23,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/features/dashboard/components/ui/table'
 
 import { cn, formatPrice, getFnsDate } from '@/features/dashboard/lib/utils'
-import { domyTans } from '../../lib/domy-data'
+import type { RootState } from '@/store/store'
+import { useSelector } from 'react-redux'
+import type { RecurringBills } from '../../lib/types/recurring'
 import { Button } from '../ui/button'
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem } from '../ui/pagination'
 import { usePagination } from './use-pagination'
@@ -50,28 +52,6 @@ function getComp(date: string) {
     }
 };
 
-export type Category =
-    | "General"
-    | "Dining Out"
-    | "Groceries"
-    | "Entertainment"
-    | "Transportation"
-    | "Lifestyle"
-    | "Personal Care"
-    | "Education"
-    | "Bills"
-    | "Shopping";
-
-
-export interface RecurringBills {
-    avatar: string;
-    name: string;
-    category: string;
-    date: string;
-    amount: number;
-    recurring: boolean;
-}
-
 
 const columns: ColumnDef<RecurringBills>[] = [
     {
@@ -91,24 +71,24 @@ const columns: ColumnDef<RecurringBills>[] = [
     {
         header: 'Due Date',
         accessorKey: 'date',
-        cell: ({ row }) => getComp(row.getValue('date')),
+        cell: ({ row }) => <div>{getComp(row.getValue('date'))}</div>,
     },
     {
         header: 'Amount',
         accessorKey: 'amount',
         sortingFn: 'basic',
-        cell: ({ row }) => <div className={cn('font-semibold', `${(Number(row.getValue('amount')) > 0) ? 'text-primary' : ''}`)}>{formatPrice(row.getValue('amount'))}</div>,
+        cell: ({ row }) => <div className={cn('font-semibold text-start', `${(Number(row.getValue('amount')) > 0) ? 'text-primary' : ''}`)}>{formatPrice(row.getValue('amount'))}</div>,
         meta: {
             filterVariant: 'sorts'
         }
     }
 ]
 
-const items = domyTans
-
-
-
 function RecurringBillsTable() {
+    const transactions = useSelector((state: RootState) => state.finance.transactions)
+    const items = useMemo(() => {
+        return transactions.filter(f => f.recurring)
+    } , [transactions])
 
     const pageSize = 5
 
@@ -155,7 +135,7 @@ function RecurringBillsTable() {
     return (
         <div className='w-full space-y-4'>
             <div className='rounded-md border'>
-                <div className='flex gap-3 px-4 py-6'>
+                <div className='flex gap-3 px-4 py-6 '>
                     <div className='w-44'>
                         <Filter column={table.getColumn('name')!} />
                     </div>

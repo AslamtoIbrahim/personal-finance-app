@@ -18,16 +18,18 @@ import {
 } from '@tanstack/react-table'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/features/dashboard/components/ui/avatar'
-import { Checkbox } from '@/features/dashboard/components/ui/checkbox'
 import { Input } from '@/features/dashboard/components/ui/input'
 import { Label } from '@/features/dashboard/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/features/dashboard/components/ui/select'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/features/dashboard/components/ui/table'
 
 import { cn, formatDate, formatPrice } from '@/features/dashboard/lib/utils'
-import { usePagination } from './use-pagination'
-import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem } from '../ui/pagination'
+import type { RootState } from '@/store/store'
+import { useSelector } from 'react-redux'
+import type { Transaction } from '../../lib/types/transaction'
 import { Button } from '../ui/button'
+import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem } from '../ui/pagination'
+import { usePagination } from './use-pagination'
 
 declare module '@tanstack/react-table' {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -35,29 +37,6 @@ declare module '@tanstack/react-table' {
         filterVariant?: 'text' | 'range' | 'select' | 'sorts'
     }
 }
-
-export type Category =
-    | "General"
-    | "Dining Out"
-    | "Groceries"
-    | "Entertainment"
-    | "Transportation"
-    | "Lifestyle"
-    | "Personal Care"
-    | "Education"
-    | "Bills"
-    | "Shopping";
-
-
-export interface Transaction {
-    avatar: string;
-    name: string;
-    category: Category;
-    date: string;
-    amount: number;
-    recurring: boolean;
-}
-
 
 const columns: ColumnDef<Transaction>[] = [
     {
@@ -104,76 +83,8 @@ const columns: ColumnDef<Transaction>[] = [
     }
 ]
 
-const items: Transaction[] = [
-    {
-        avatar: "assets/images/avatars/emma-richardson.jpg",
-        name: "Sami ",
-        category: "General",
-        date: "2024-08-19T14:23:11Z",
-        amount: 75.50,
-        recurring: false
-    },
-    {
-        avatar: "assets/images/avatars/emma-richardson.jpg",
-        name: "Emma Richardson",
-        category: "General",
-        date: "2024-08-19T14:23:11Z",
-        amount: 75.50,
-        recurring: false
-    },
-    {
-        avatar: "./assets/images/avatars/savory-bites-bistro.jpg",
-        name: "Savory Bites Bistro",
-        category: "Dining Out",
-        date: "2024-08-19T20:23:11Z",
-        amount: -55.50,
-        recurring: false
-    },
-    {
-        avatar: "./assets/images/avatars/daniel-carter.jpg",
-        name: "Daniel Carter",
-        category: "Bills",
-        date: "2024-08-18T09:45:32Z",
-        amount: -42.30,
-        recurring: false
-    },
-    {
-        avatar: "./assets/images/avatars/daniel-carter.jpg",
-        name: "Zza Plua",
-        category: "Education",
-        date: "2024-11-18T09:45:32Z",
-        amount: -42.30,
-        recurring: false
-    },
-    {
-        avatar: "assets/images/avatars/emma-richardson.jpg",
-        name: "Emma Richardson",
-        category: "General",
-        date: "2024-08-19T14:23:11Z",
-        amount: 75.50,
-        recurring: false
-    },
-    {
-        avatar: "./assets/images/avatars/sun-park.jpg",
-        name: "Sun Park",
-        category: "Transportation",
-        date: "2024-08-17T16:12:05Z",
-        amount: 120.00,
-        recurring: false
-    },
-    {
-        avatar: "./assets/images/avatars/urban-services-hub.jpg",
-        name: "Urban Services Hub",
-        category: "General",
-        date: "2024-08-17T21:08:09Z",
-        amount: -65.00,
-        recurring: false
-    }
-];
-
-
-
 function TransactionsTable() {
+    const transactions = useSelector((state: RootState) => state.finance.transactions)
 
     const pageSize = 5
 
@@ -185,13 +96,13 @@ function TransactionsTable() {
 
     const [sorting, setSorting] = useState<SortingState>([
         {
-            id: 'price',
+            id: 'amount',
             desc: false
         }
     ])
 
     const table = useReactTable({
-        data: items,
+        data: transactions,
         columns,
         state: {
             sorting,
@@ -220,12 +131,11 @@ function TransactionsTable() {
     return (
         <div className='w-full space-y-4'>
             <div className='rounded-md border'>
-                <div className='flex gap-3 px-4 py-6'>
+                <div className='flex gap-3 px-4 py-6 flex-wrap'>
                     <div className='w-44'>
                         <Filter column={table.getColumn('name')!} />
                     </div>
                     <div className='w-36'>
-                        {/* <Filter column={table.getColumn('amount')!} /> */}
                         <Sort table={table} />
                     </div>
                     <div className='w-44'>
@@ -239,7 +149,7 @@ function TransactionsTable() {
                             <TableRow key={headerGroup.id} className='bg-muted/50'>
                                 {headerGroup.headers.map(header => {
                                     return (
-                                        <TableHead key={header.id} className='relative h-10 border-t select-none'>
+                                        <TableHead key={header.id} className='relative h-10 border-t select-none text-center'>
                                             {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                                         </TableHead>
                                     )
@@ -364,7 +274,6 @@ function Filter({ column }: { column: Column<any, unknown> }) {
     const id = useId()
 
     const columnFilterValue = column.getFilterValue()
-    // const sortValue = column.getSortValue()
     const { filterVariant } = column.columnDef.meta ?? {}
     const columnHeader = typeof column.columnDef.header === 'string' ? column.columnDef.header : ''
 
@@ -392,7 +301,7 @@ function Filter({ column }: { column: Column<any, unknown> }) {
                 <div className='flex'>
                     <Input
                         id={`${id}-range-1`}
-                        className='flex-1 rounded-r-none [-moz-appearance:_textfield] focus:z-10 [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none'
+                        className='flex-1 rounded-r-none [-moz-appearance:textfield] focus:z-10 [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none'
                         value={(columnFilterValue as [number, number])?.[0] ?? ''}
                         onChange={e =>
                             column.setFilterValue((old: [number, number]) => [
@@ -406,7 +315,7 @@ function Filter({ column }: { column: Column<any, unknown> }) {
                     />
                     <Input
                         id={`${id}-range-2`}
-                        className='-ms-px flex-1 rounded-l-none [-moz-appearance:_textfield] focus:z-10 [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none'
+                        className='-ms-px flex-1 rounded-l-none [-moz-appearance:textfield] focus:z-10 [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none'
                         value={(columnFilterValue as [number, number])?.[1] ?? ''}
                         onChange={e =>
                             column.setFilterValue((old: [number, number]) => [
@@ -472,8 +381,6 @@ function Filter({ column }: { column: Column<any, unknown> }) {
 
 
 function Sort({ table }: { table: any }) {
-    // const options = ["Latest", "Oldest", "A to Z", "Z to A", "Highest", "Lowest"]
-
     const sortOptions = [
         { label: "Latest", value: "date-desc" },
         { label: "Oldest", value: "date-asc" },

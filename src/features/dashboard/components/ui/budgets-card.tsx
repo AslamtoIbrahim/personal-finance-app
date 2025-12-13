@@ -1,16 +1,19 @@
+import type { RootState } from "@/store/store";
 import { ChevronRightIcon } from "lucide-react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { cn } from "../../lib/utils";
 import { data } from "../app-sidebar";
+import { BudgetChartPie } from "../charts/budget-chart-pie";
+import BudgetTitleItem from "./budget-title-item";
 import { Button } from "./button";
 import { Card, CardContent, CardHeader, CardTitle } from "./card";
-import PriceTitleItem from "./price-title-item";
-import { ChartPieDonutText } from "../charts/chart-pie-donut-text";
 
 type CardBudgetsProps = React.ComponentProps<'div'> & { className?: string; }
 
 
 function BudgetsCard({ className, ...props }: CardBudgetsProps) {
+    const budgets = useSelector((state: RootState) => state.finance.budgets)
     return <Card className={cn('', className)} {...props}>
 
         <CardHeader>
@@ -23,10 +26,10 @@ function BudgetsCard({ className, ...props }: CardBudgetsProps) {
             </div>
         </CardHeader>
         <CardContent className="grid grid-cols-1 gap-y-4 md:grid-cols-2 gap-x-8 items-center">
-            <ChartPieDonutText />
+            <BudgetChartPie />
             <section className="flex gap-4 md:gap-x-8 flex-wrap  ">
                 {
-                    [...Array(4)].map((_, i) => <PriceTitleItem className=" " key={i} title={`title ${i * 544}`} price={110} />)
+                    budgets.slice(0, 4).map((b, i) => <BudgetTitleItem key={b.theme + i} budget={b} />)
                 }
             </section>
         </CardContent>

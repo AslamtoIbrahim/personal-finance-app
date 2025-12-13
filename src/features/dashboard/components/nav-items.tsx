@@ -14,7 +14,8 @@ import {
   SidebarMenu,
   SidebarMenuAction,
   SidebarMenuButton,
-  SidebarMenuItem
+  SidebarMenuItem,
+  useSidebar
 } from "@/features/dashboard/components/ui/sidebar"
 import { Link, useLocation } from "react-router-dom"
 import { Activity } from "react"
@@ -29,17 +30,21 @@ export function NavItems({
     icon: LucideIcon
   }[]
 }) {
-  const  pathname  = decodeURIComponent(useLocation().pathname)
+  const pathname = decodeURIComponent(useLocation().pathname)
+  const { toggleSidebarMobile } = useSidebar()
+  function handleClick(): void {
+    toggleSidebarMobile()
+  }
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:">
       <SidebarMenu>
         {navItems.map((item) => (
-         
+
           <SidebarMenuItem key={item.name}>
             <SidebarMenuButton asChild className={`${pathname.includes(item.url) ? 'bg-foreground/10' : ''}`}>
-              <Link to={item.url}>
-                <item.icon className={`${pathname.includes(item.url) ? 'text-primary' : ''}`}/>
+              <Link onClick={handleClick} to={item.url}>
+                <item.icon className={`${pathname.includes(item.url) ? 'text-primary' : ''}`} />
                 <span className={`${pathname.includes(item.url) ? 'text-primary' : ''}`}>{item.name}</span>
               </Link>
             </SidebarMenuButton>

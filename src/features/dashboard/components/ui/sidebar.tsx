@@ -38,6 +38,7 @@ type SidebarContextProps = {
   setOpenMobile: (open: boolean) => void
   isMobile: boolean
   toggleSidebar: () => void
+  toggleSidebarMobile: () => void
 }
 
 const SidebarContext = React.createContext<SidebarContextProps | null>(null)
@@ -93,10 +94,20 @@ function SidebarProvider({
     [setOpenProp, open]
   )
 
+  console.log('openMobile', openMobile);
+
+
   // Helper to toggle the sidebar.
   const toggleSidebar = React.useCallback(() => {
     return isMobile ? setOpenMobile((open) => !open) : setOpen((open) => !open)
   }, [isMobile, setOpen, setOpenMobile])
+
+  const toggleSidebarMobile = React.useCallback(() => {
+    console.log('toggleSidebarMobile 🧢', isMobile);
+    return setOpenMobile((open) => !open)
+  }, [isMobile, setOpenMobile])
+
+
 
   // Adds a keyboard shortcut to toggle the sidebar.
   React.useEffect(() => {
@@ -127,8 +138,9 @@ function SidebarProvider({
       openMobile,
       setOpenMobile,
       toggleSidebar,
+      toggleSidebarMobile,
     }),
-    [state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar]
+    [state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar, toggleSidebarMobile]
   )
 
   return (

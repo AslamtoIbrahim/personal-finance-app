@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-
+import { toast } from 'sonner'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -20,10 +20,11 @@ export function formatDate(value: string) {
   });
 }
 
-
-export function animate(isActive: boolean){ 
-  const anime = isActive ? 'opacity-100 scale-100 visible' :  'opacity-0 scale-75 invisible'
-  return cn("transition-all duration-300 ease-in-out", anime)
+export function animate(isActive: boolean) {
+  const anime = isActive
+    ? "opacity-100 scale-100 visible"
+    : "opacity-0 scale-75 invisible";
+  return cn("transition-all duration-300 ease-in-out", anime);
 }
 
 function getSuffix(day: number) {
@@ -43,10 +44,36 @@ function getSuffix(day: number) {
   }
 }
 
-export function getFnsDate(date: string){
-  const dt = new Date(date)
-  const day = dt.getUTCDate()
-  const suf = getSuffix(day)
-  return `Monthly-${day}${suf}`
+export function getFnsDate(date: string) {
+  const dt = new Date(date);
+  const day = dt.getUTCDate();
+  const suf = getSuffix(day);
+  return `Monthly-${day}${suf}`;
+}
+
+export function getDay(date: string) {
+  const dt = new Date(date);
+  return dt.getUTCDate();
+}
+
+export const sonnery = (text: string) => {
+    toast.warning(text, {
+           style: {
+            '--normal-bg': 'var(--background)',
+            '--normal-text': 'light-dark(var(--color-amber-600), var(--color-amber-400))',
+            '--normal-border': 'light-dark(var(--color-amber-600), var(--color-amber-400))'
+          } as React.CSSProperties,
+          position: 'top-right'
+        })
 };
 
+export const errory = (text: string) => {
+    toast.warning(text, {
+            style: {
+            '--normal-bg': 'var(--background)',
+            '--normal-text': 'var(--destructive)',
+            '--normal-border': 'var(--destructive)'
+          } as React.CSSProperties,
+          position: 'top-right'
+        })
+};

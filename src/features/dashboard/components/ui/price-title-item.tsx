@@ -1,22 +1,21 @@
+import type { Pot } from "../../lib/types/pot";
 import { cn, formatPrice } from "../../lib/utils";
-import uniqolor from 'uniqolor';
 
 type ItemPotsProps = React.ComponentProps<'div'> & {
     className?: string;
-    title: string;
-    price: number;
+    pot: Pot
 }
 
 
-function PriceTitleItem({ className, title, price, ...props }: ItemPotsProps) {
+function PotTitleItem({ className, pot, ...props }: ItemPotsProps) {
     return <div className={cn('w-20 h-fit flex gap-3', className)} {...props}>
-        <div className="rounded w-1 shrink-0" style={{ background: uniqolor(title).color }} />
+        <div className="rounded w-1 shrink-0" style={{ background: pot.theme }} />
         <div className="text-start space-y-1">
-            <p className="text-xs font-light">{title}</p>
-            <p className="text-sm font-bold">${formatPrice(price)}</p>
+            <p className="text-xs font-light text-nowrap">{pot.name}</p>
+            <p className="text-sm font-bold">{formatPrice(pot.total)}</p>
         </div>
     </div>
 }
 
 
-export default PriceTitleItem;
+export default PotTitleItem;

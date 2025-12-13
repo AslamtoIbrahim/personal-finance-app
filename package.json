@@ -35,6 +35,7 @@
     "react-responsive": "^10.0.1",
     "react-router-dom": "^7.10.1",
     "recharts": "^3.5.1",
+    "sonner": "^2.0.7",
     "tailwind-merge": "^3.4.0",
     "tailwindcss": "^4.1.17",
     "uniqolor": "^1.1.1",

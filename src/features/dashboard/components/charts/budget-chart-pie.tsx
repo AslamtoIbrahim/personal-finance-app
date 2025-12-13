@@ -1,8 +1,12 @@
 "use client"
 
-import * as React from "react"
 import { Label, Pie, PieChart } from "recharts"
 
+import type { RootState } from "@/store/store"
+import { useMemo } from "react"
+import { useSelector } from "react-redux"
+import { useMediaQuery } from 'react-responsive'
+import { formatPrice } from "../../lib/utils"
 import {
     CardContent
 } from "../ui/card"
@@ -12,65 +16,35 @@ import {
     ChartTooltip,
     ChartTooltipContent,
 } from './chart'
-import { formatPrice } from "../../lib/utils"
-import { useMediaQuery } from 'react-responsive'
-
-export const description = "A donut chart with text"
-
-const chartData = [
-    { browser: "chrome", visitors: 100, fill: "var(--color-chrome)" },
-    { browser: "safari", visitors: 100, fill: "var(--color-safari)" },
-    { browser: "firefox", visitors: 100, fill: "var(--color-firefox)" },
-    { browser: "edge", visitors: 100, fill: "var(--color-edge)" },
-    { browser: "other", visitors: 100, fill: "var(--color-other)" },
-    { browser: "ear", visitors: 100, fill: "var(--color-edge)" },
-]
-
-
-// "budgets": [
-//         {
-//             "category": "Entertainment",: label
-//             "maximum": 50.00, : visitors
-//             "theme": "#277C78" : color
-//         },]
 
 const chartConfig = {
     visitors: {
         label: "Visitors",
     },
-    chrome: {
-        label: "Chrome 🥩",
-        color: "var(--chart-1)",
-    },
-    safari: {
-        label: "Safari",
-        color: "var(--chart-2)",
-    },
-    firefox: {
-        label: "Firefox",
-        color: "var(--chart-3)",
-    },
-    edge: {
-        label: "Edge",
-        color: "var(--chart-4)",
-    },
-    other: {
-        label: "Other",
-        color: "var(--chart-5)",
-    },
-    ear: {
-        label: "Ear",
-        color: "#2abb",
-    },
+
 } satisfies ChartConfig
 
-export function ChartPieDonutText() {
+export function BudgetChartPie() {
+    const budgets = useSelector((state: RootState) => state.finance.budgets)
+    const transactions = useSelector((state: RootState) => state.finance.transactions)
+    const budgetConfig = budgets.map(b => {
+        const { theme, ...res } = b
+        return { ...res, fill: theme }
+    })
     const isDesktopOrLaptop = useMediaQuery({
         query: '(min-width: 425px)'
     })
-    const totalVisitors = React.useMemo(() => {
-        return chartData.reduce((acc, curr) => acc + curr.visitors, 0)
-    }, [])
+    const totalVisitors = useMemo(() => {
+        return budgets.reduce((acc, b) => acc + b.maximum, 0)
+    }, [budgets])
+
+    const expenses = useMemo(() => {
+        const includesBudgets = budgets.map(b => b.category)
+        return transactions.reduce((acc, t) => {
+            if (!includesBudgets.includes(t.category)) return acc
+            return acc - t.amount
+        }, 0)
+    }, [transactions])
 
     return (
         <div className="flex flex-col">
@@ -85,9 +59,9 @@ export function ChartPieDonutText() {
                             content={<ChartTooltipContent hideLabel />}
                         />
                         <Pie
-                            data={chartData}
-                            dataKey="visitors"
-                            nameKey="browser"
+                            data={budgetConfig}
+                            dataKey="maximum"
+                            nameKey="category"
                             innerRadius={isDesktopOrLaptop ? 70 : 45}
                             strokeWidth={5}
                         >
@@ -106,7 +80,7 @@ export function ChartPieDonutText() {
                                                     y={viewBox.cy}
                                                     className="fill-foreground truncate font-bold text-sm md:text-base xl:text-2xl"
                                                 >
-                                                    {formatPrice(totalVisitors)}
+                                                    {formatPrice(expenses)}
                                                 </tspan>
                                                 <tspan
                                                     x={viewBox.cx}

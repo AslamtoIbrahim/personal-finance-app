@@ -1,5 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { updatePot } from "../../lib/financer/financeSlicer";
 import { moneySchema } from "../../lib/schemas/money.schema";
 import type { Money } from "../../lib/types/money";
 import type { Pot } from "../../lib/types/pot";
@@ -13,20 +15,39 @@ import WithdrawRang from "./withdraw-range";
 type WithdrawDialogProps = React.ComponentProps<'div'> & {
   className?: string;
   closeDialog: () => void
-  pot: Pot
+  pot?: Pot
 }
 
 
 function WithdrawDialog({ className, closeDialog, pot, ...props }: WithdrawDialogProps) {
+  if (!pot) {
+    return null
+  }
+
+  const dispatch = useDispatch()
   const form = useForm<Money>({
     resolver: zodResolver(moneySchema),
     defaultValues: {
+      total: pot.total.toString(),
       amount: '',
     }
   })
+  const watchedAmount = form.watch("amount");
+
+
+  function resetWithdrawValues() {
+    form.reset({ amount: '', })
+  };
 
   function onSubmit(data: Money) {
     console.log('data: ', data);
+    if (data && pot) {
+      dispatch(updatePot({
+        lastTheme: pot.theme,
+        total: pot.total - Number(data.amount)
+      }))
+      resetWithdrawValues()
+    }
     closeDialog()
   }
   return (
@@ -37,19 +58,27 @@ function WithdrawDialog({ className, closeDialog, pot, ...props }: WithdrawDialo
       <CardHeader>
         <CardTitle>Withdraw from {pot.name}</CardTitle>
         <CardDescription>
-          Withdraw from your pot to put money back in your main balance. This will reduce the amount you have in this pot.       
-          </CardDescription>
+          Withdraw from your pot to put money back in your main balance. This will reduce the amount you have in this pot.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <form id="form-rhf-withdraw" onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup>
-            <section className="space-y-4">
-              <div className="flex justify-between">
-                <p className="text-xs text-start">Amount To Withdraw</p>
-                <p className="font-bold text-lg text-start">{formatPrice(110)}</p>
-              </div>
-              <WithdrawRang withdrawValue={50} pot={pot} />
-            </section>
+            <Controller
+              name="total"
+              control={form.control}
+              render={({fieldState }) => (
+                <Field  data-invalid={fieldState.invalid}>
+                  <div className="flex justify-between">
+                    <FieldLabel htmlFor="form-rhf-input-withdraw">
+                      Total Saved
+                    </FieldLabel>
+                    <p className="font-bold text-lg text-start">{formatPrice(pot.total - Number(watchedAmount))}</p>
+                  </div>
+                  <WithdrawRang withdrawValue={Number(watchedAmount)} pot={pot} />
+                </Field>
+              )}
+            />
             <Controller
               name="amount"
               control={form.control}
