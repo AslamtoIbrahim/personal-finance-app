@@ -22,6 +22,7 @@ const initialFinance: Finance = {
 export const fetchData = createAsyncThunk("data/fetch", async () => {
   // Try reading from localStorage
   const local = localStorage.getItem(FINANCE_KEY);
+  console.log("local", local);
   if (local) {
     try {
       return JSON.parse(local) as Finance;
@@ -31,13 +32,15 @@ export const fetchData = createAsyncThunk("data/fetch", async () => {
   }
 
   // Fallback to file fetch
-  const res = await fetch("@/data/data.json");
+  const res = await fetch('/data/data.json');
+
   if (!res.ok) {
     throw new Error("Failed to fetch finance data");
   }
-  return (await res.json()) as Promise<Finance>;
+  const data = await res.json();
+  console.log("data", data);
+  return data as Finance;
 });
-
 
 export const financeSlice = createSlice({
   name: "finance",
@@ -49,12 +52,16 @@ export const financeSlice = createSlice({
       localStorage.setItem(FINANCE_KEY, JSON.stringify(state));
     },
     deleteBudget: (state, action: PayloadAction<string>) => {
-      state.budgets = state.budgets.filter((b) => b.category !== action.payload);
+      state.budgets = state.budgets.filter(
+        (b) => b.category !== action.payload
+      );
       localStorage.setItem(FINANCE_KEY, JSON.stringify(state));
     },
     updateBudget: (state, action: PayloadAction<UpdateBudgetPaylod>) => {
       const data = action.payload;
-      const budget = state.budgets.find((b) => b.category === data.lastCategory);
+      const budget = state.budgets.find(
+        (b) => b.category === data.lastCategory
+      );
       if (budget) {
         Object.assign(budget, data);
         localStorage.setItem(FINANCE_KEY, JSON.stringify(state));
