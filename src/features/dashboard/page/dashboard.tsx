@@ -21,8 +21,10 @@ export default function Dashboard() {
   const { pathname } = useLocation();
   const dispatch = useDispatch<AppDispatch>()
   useEffect(() => {
+    console.log('useEffect 🧧');
     dispatch(fetchData())
   }, [dispatch]);
+
   return (
     <SidebarProvider>
       <AppSidebar />
