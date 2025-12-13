@@ -28,6 +28,7 @@ import {
 } from "@/features/dashboard/components/ui/sidebar"
 
 // This is sample data.
+// eslint-disable-next-line react-refresh/only-export-components
 export const data = {
   user: {
     name: "aslama",

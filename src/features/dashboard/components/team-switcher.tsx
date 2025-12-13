@@ -1,6 +1,3 @@
-"use client"
-
-
 import {
   DropdownMenu,
   DropdownMenuTrigger
@@ -10,6 +7,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem
 } from "@/features/dashboard/components/ui/sidebar"
+import logo from "@/assets/images/logo-small.svg";
 
 export function TeamSwitcher(
 
@@ -26,7 +24,7 @@ export function TeamSwitcher(
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                <img src="src/assets/images/logo-small.svg" alt="" />
+                <img src={logo} alt="" />
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <h1 className="text-start px-2 text-3xl font-black">Finance</h1>
