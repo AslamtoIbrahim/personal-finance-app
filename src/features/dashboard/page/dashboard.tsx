@@ -21,7 +21,6 @@ export default function Dashboard() {
   const { pathname } = useLocation();
   const dispatch = useDispatch<AppDispatch>()
   useEffect(() => {
-    console.log('useEffect 🧧');
     dispatch(fetchData())
   }, [dispatch]);
 
@@ -43,10 +42,6 @@ export default function Dashboard() {
                     {decodeURIComponent(pathname.slice(1))}
                   </BreadcrumbLink>
                 </BreadcrumbItem>
-                {/* <BreadcrumbSeparator className="hidden md:block" />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-                </BreadcrumbItem> */}
               </BreadcrumbList>
             </Breadcrumb>
           </div>

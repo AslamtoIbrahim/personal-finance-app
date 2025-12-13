@@ -31,7 +31,7 @@ export const fetchData = createAsyncThunk("data/fetch", async () => {
   }
 
   // Fallback to file fetch
-  const res = await fetch("/src/data/data.json");
+  const res = await fetch("@/data/data.json");
   if (!res.ok) {
     throw new Error("Failed to fetch finance data");
   }
