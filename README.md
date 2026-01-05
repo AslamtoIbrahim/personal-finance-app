@@ -1,8 +1,18 @@
-# React + TypeScript + Vite
+# Personal Finance App – Frontend Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+## Overview
+
+This is a personal finance app frontend built using React, TypeScript, Tailwind CSS, and Vite.
+The app allows users to view, manage, and track their personal finances in a clean and responsive interface.
+
+Note: This is a frontend-only project. The data is loaded from a local data.json file. No backend or authentication is implemented.
+
+
+
+
+
+ 
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
