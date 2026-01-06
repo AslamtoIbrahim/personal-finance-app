@@ -1,6 +1,5 @@
 # Personal Finance App – Frontend Project
 
-
 ## Overview
 
 This is a personal finance app frontend built using React, TypeScript, Tailwind CSS, and Vite.
@@ -8,76 +7,42 @@ The app allows users to view, manage, and track their personal finances in a cle
 
 Note: This is a frontend-only project. The data is loaded from a local data.json file. No backend or authentication is implemented.
 
+## Features
 
+Overview page displaying all personal finance data at-a-glance
 
+Transactions page with pagination (10 transactions per page)
 
+Search, sort, and filter transactions
 
+CRUD operations for budgets and saving pots (using local state)
+
+Display the latest three transactions per budget category
+
+Track progress towards each saving pot
+
+Manage recurring bills with status for the current month
+
+Keyboard navigation for all interactive elements
+
+Fully responsive design for mobile, tablet, and desktop
+
+Interactive hover and focus states for UI elements
+
+## Tech Stack
+
+React.js – Component-based frontend
+
+TypeScript – Strongly-typed and maintainable code
+
+Tailwind CSS – Modern and responsive styling
+
+Vite – Fast development and build tool
+
+## Screenshots
  
+![Overview Page](./screenshots/overview.png)
+![Transactions Page](./screenshots/transactions.png)
+![Budgets Page](./screenshots/budgets.png)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+🔗 **Live Demo:** [View App](https://lucky-otter-2fd70c.netlify.app/overview)
